@@ -17,6 +17,9 @@ import java.util.Arrays;
 5）重复第3、4步，直到i=j； (3,4步中，没找到符合条件的值，即3中A[j]不小于key,4中A[i]不大于key的时候改变j、i的值，
 使得j=j-1，i=i+1，直至找到为止。找到符合条件的值，进行交换的时候i， j指针位置不变。
 另外，i==j这一过程一定正好是i+或j-完成的时候，此时令循环结束）。
+
+*快速排序是不稳定的排序算法，不稳定发生在基准元素与A[tail+1]交换的时刻。
+*缺点：不稳定。
  */
 public class QuickSort {
 	public static void main(String[] args) {
