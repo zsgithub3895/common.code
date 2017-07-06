@@ -1,0 +1,49 @@
+<link rel="import" href="widgets/w-treeview.html">
+	<div id="container_left">
+	 <form id="formId">
+		<div>
+			<div>
+				<div>
+					<a href="javascript:void(0)"
+						onclick="document.getElementById('area_Id').style.display = (document.getElementById('area_Id').style.display==='none'?'block':'none')">区域</a>
+				</div>
+				<div id="area_Id">
+					<w-treeview data:="dataTree" value:="valueIds"></w-treeview>
+				</div>
+			</div>
+
+			<div>
+				<div>
+					<a href="javascript:void(0)"
+						onclick="document.getElementById('platform_id').style.display = (document.getElementById('platform_id').style.display==='none'?'block':'none')">平台</a>
+				</div>
+				<div id="platform_id">
+					<ul>
+						<li>2222</li>
+						<li>2222</li>
+						<li>2222</li>
+					</ul>
+				</div>
+			</div>
+
+			<div>
+				<div>
+					<a href="javascript:void(0)"
+						onclick="document.getElementById('devicerProvider_id').style.display = (document.getElementById('devicerProvider_id').style.display==='none'?'block':'none')">厂商</a>
+				</div>
+				<div id="devicerProvider_id">
+					<ul>
+						<li>3333</li>
+						<li>3333</li>
+						<li>3333</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+ 		 </form>
+	</div>
+<script>
+	var dataTree = yield W.get('province-tree')
+	 valueIds=[2,3]
+</script>

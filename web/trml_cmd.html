@@ -1,0 +1,306 @@
+<style>
+.modal-body{height: 400px}
+.headerForm{height: 20px}
+.borderFormALL{border-top:2px solid #D8D8D8;border-bottom:2px solid #D8D8D8;margin-top:30px;height:160px}
+.borderForm{margin-top:5px;height:120px}
+.bottomForm{margin-top:5px;height:120px}
+</style>
+<link rel="import" href="widgets/w-datepicker.html">
+<div class="modal-body">
+	<div id="cmdLine" class="headerForm">
+	    <div align="center">命令选择</div>
+		<button type="button" class="btn btn-primary" onclick:="collapse(0)">ping</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(1)">Traceroute</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(2)">远程抓包</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(3)">抓屏</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(4)">网络测速</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(5)">信令抓包</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(6)">开机抓包</button>
+		<button type="button" class="btn btn-primary" onclick:="collapse(7)">自定义</button>
+	</div>
+	
+	 <div align="center" class="borderFormALL">
+	  <form class="borderForm">
+		   <div id="pingForm" class="collapseTrml">
+				<div>
+					<label>发包个数 </label><input class="pingBag" type="text" value:="data.bagCount" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>发包间隔(s)</label><input type="text" value:="data.bagInterval" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>包 长 </label><input type="text" value:="data.bagLenght" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>IP地址/URL</label><input type="text"  value:="data.bagURL" data-validate="url" class="w-required"/><button id="button" type="button" onclick:="exec('ping')">发送</button>
+				</div>
+			</div>
+			
+			 <div id="tracerouteForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>发包个数 </label><input type="text" value:="data.tracerouteCount" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>发包间隔(s)</label><input type="text" value:="data.tracerouteInterval" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>IP地址/URL</label><input type="text" value:="data.tracerouteURL" data-validate="url" class="w-required"/><button id="button" type="button" onclick:="exec('traceroute')">发送</button>
+				</div>
+			</div>
+			
+			 <div id="captureForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>上报URL </label><input type="text" value:="data.captureURL" data-validate="url" class="w-required"/>
+				</div>
+				<div>
+					<label>保存大小</label><input type="text" value:="data.captureSize" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>保存时间(s)</label><input type="text" value:="data.captureTime" data-validate="number" class="w-required"/><button id="button" type="button" onclick:="exec('capture')">发送</button>
+				</div>
+			</div>
+			
+			<div id="screenCapForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>是否通过播放器截屏</label><input class="isScreenCap" type="checkbox">
+				</div>
+				<div>
+					<label>图片上传URL</label><input type="text" value:="data.screenCapURL" data-validate="url" class="w-required"/><button id="button" type="button" onclick:="exec('screenCap')">发送</button>
+				</div>
+			</div>
+			
+			<div id="testNetRateForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>网络测速URL </label><input type="text" value:="data.testNetRateURL" data-validate="url" class="w-required"/><button id="button" type="button" onclick:="exec('testNetRate')">发送</button>
+				</div>
+			</div>
+			
+			<div id="signalingForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>上报URL </label><input type="text" value:="data.signalingURL" data-validate="url" class="w-required"/>
+				</div>
+				<div>
+					<label>保存大小(M)</label><input type="text" value:="data.signalingSize" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>保存时间(s) </label><input type="text" value:="data.signalingTime" data-validate="number" class="w-required"/><button id="button" type="button" onclick:="exec('signaling')">发送</button>
+				</div>
+			</div>
+			
+			<div id="rebootForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>上报URL </label><input type="text" value:="data.rebootURL" data-validate="url" class="w-required"/>
+				</div>
+				<div>
+					<label>保存大小(M)</label><input type="text" value:="data.rebootSize" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>保存时间(s) </label><input type="text" value:="data.rebootTime" data-validate="number" class="w-required"/>
+				</div>
+				<div>
+					<label>重启</label><input class="isReboot" type="checkbox" /><button id="button" type="button" onclick:="exec('reboot')">发送</button>
+				</div>
+			</div>
+			
+			<div id="shellForm" class="collapseTrml" style="display:none;">
+				<div>
+					<label>自定义命令</label><input type="text" value:="data.shellDefine"/><button id="button" type="button" onclick:="exec('shell')">发送</button>
+				</div>
+			</div>
+		</form>
+		
+	      <div>
+	        <div style="float:left"><input class="isExec" type="checkbox" /><label>命令执行时间</label></div>
+	        <div style="float:left;margin-left: 10px"><w-datepicker format:="format" value:="data.kpiUTCSec" time/></div>
+          </div>
+	</div>
+	
+	<div class="bottomForm">
+	  <div> <button id="button1" type="button" class="btn btn-primary">${command}</button></div>
+	  <div class="orderResult">${desc}</div>
+	  <textarea class="areaValue" rows="5" cols="100">${pingResult}</textarea>
+	</div>
+	
+</div>
+<script>
+var deviceId = W.param('deviceId'),
+mode = W.param('mode'),command='cmd', execStatus,desc = '命令执行结果：',cmdPlanUTCSec=0,cmdExecUTC,cmdPlanTime,execResult,format = 'YYYY/MM/DD HH:mm:ss',isScreen,isReboot,
+time,pingResult='',traceResult='',captureResult='',screenCapResult='',testNetRateResult='',signalingResult='',rebootResult='',shellResult='',
+data = {
+	kpiUTCSec: moment().format(format),
+	bagCount: '10',
+	bagInterval:'1',
+	bagLenght:'100',
+	bagURL:'www.baidu.com',
+	
+	tracerouteCount:'10',
+	tracerouteInterval:'3',
+	tracerouteURL:'115.239.210.27',
+	
+	captureURL:'http://localhost:8088/evqm/FlexFileUpload?FlexFileUID=003501FF0018520000020019F0E69B9C/20170505_125640.pcap',
+	captureSize:'10',
+	captureTime:'60',
+	
+	screenCapURL:'http://localhost:8088/evqm/FlexFileUpload?FlexFileUID=003501FF0018520000020019F0E69B9C/20170505_130225.png',
+			
+	testNetRateURL:'start@@@http://down.360safe.com/360/inst.exe',
+	
+	signalingURL:'http://localhost:8088/evqm/FlexFileUpload?FlexFileUID=003501FF0018520000020019F0E69B9C/20170505_141914.pcap',
+	signalingSize:'10',
+	signalingTime:'60',
+	
+	rebootURL:'http://localhost:8088/evqm/FlexFileUpload?FlexFileUID=qboot.pcap',
+	rebootSize:'10',
+	rebootTime:'60',
+	
+	shellDefine:'ls -l /'
+	
+}
+
+function reset(){
+	data.kpiUTCSec=moment().format(format)
+} 
+
+function collapse(index)
+{
+	var $select_collapse = $(W.$('.collapseTrml')[index])
+	    for(var i=0;i<8;i++){
+	    	if(index == i){
+	    		$select_collapse.show();
+	    	}else{
+	    		$(W.$('.collapseTrml')[i]).hide();
+	    	}
+	    }
+}
+
+ function exec(cmd){
+		command = cmd
+		var cmdParamType = cmdLineType($.trim(cmd))
+		 if($(W.$('.isExec')).is(':checked')){
+			 cmdPlanTime = new Date(time).getTime()/1000
+		 }else{
+			 cmdPlanTime = 0
+		 } 
+		var se = {deviceId:deviceId,cmdLine:command,cmdParams:cmdParamType,cmdPlanUTCSec: mode == 'Debug'?'0': cmdPlanTime}
+		W.post('trmlcmd/send/'+mode, se).then(function(data) {
+			if(data){
+				if(mode == 'Daily'){
+					execResult = '日常模式下发命令时间过久，约3~8分钟，请稍后到命令结果查询页面查看结果！！！';
+				}else if(mode == 'Debug'){
+						var ge = {deviceId:deviceId,cmdLine:command,cmdId:data}
+						//var times_delay = W.setInterval(function(){
+							W.post('trmlcmd/execResult', ge).then(function(result) {
+								  if(result){
+									desc="命令执行状态："
+									// 命令执行状态。0：已下发，1：执行成功:2：执行失败:3：未执行。
+									if(result.execStatus == 0){
+										execStatus='执行中'
+									}else if(result.execStatus == 1){
+										execStatus='成功'
+										//清除循环
+										//W.clearInterval(times_delay)
+									}else if(result.execStatus == 2){
+										execStatus='失败'
+										//清除循环
+										//W.clearInterval(times_delay)
+									}else if(result.execStatus == 3){
+										execStatus='未执行'
+									}
+									cmdExecUTC =desc+ execStatus+"&nbsp;&nbsp;&nbsp;&nbsp;结束时间："+new Date(parseInt(result.cmdExecUTCSec*1000)).toLocaleString()
+									$(W.$('.orderResult')).html(cmdExecUTC)
+									if('ping'==ge.cmdLine){
+										pingResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(pingResult)
+									}else if('traceroute'==command){
+										traceResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(traceResult)
+									}else if('capture'==command){
+										captureResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(captureResult)
+									}else if('screenCap'==command){
+										screenCapResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(screenCapResult)
+									}else if('testNetRate'==command){
+										testNetRateResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(testNetRateResult)
+									}else if('signaling'==command){
+										signalingResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(signalingResult)
+									}else if('reboot'==command){
+										rebootResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(rebootResult)
+									}else if('shell'==command){
+										shellResult += result.execResult+'\n'
+										$(W.$('.areaValue')).html(shellResult)
+									}
+									
+								} 
+							})
+						//},10000) 
+				}
+			}else{
+				//获取不到响应信息
+				execResult = '获取不到响应信息'
+			}
+		}, function(error) {
+			alert(error.message)
+		})
+	}  
+
+ 
+ function cmdLineType(singleCmdLine){
+	 var resultcmdLineType='';
+	 switch(singleCmdLine)
+		{
+		case "ping":
+			 resultcmdLineType = data.bagCount+'@@@'+data.bagInterval+'@@@'+data.bagLenght+'@@@'+data.bagURL;
+			 break;
+		case "traceroute":
+			 resultcmdLineType = data.tracerouteCount+'@@@'+data.tracerouteInterval+'@@@'+data.tracerouteURL;
+			 break;
+		case "capture":
+			 resultcmdLineType = data.captureURL+'@@@'+data.captureSize+'@@@'+data.captureTime;
+			 break;
+		case "screenCap":
+			  if($(W.$('.isScreenCap')).is(':checked')){
+				  isScreen='true'
+			 }else{
+				 isScreen='false'
+			 } 
+			 resultcmdLineType = data.screenCapURL+'@@@'+isScreen;
+			 break;
+			 
+		case "testNetRate":
+			 resultcmdLineType = data.testNetRateURL;
+			 break;
+			 
+		case "signaling":
+			 resultcmdLineType = data.signalingURL+'@@@'+data.signalingSize+'@@@'+data.signalingTime;
+			 break;
+			 
+		case "reboot":
+			 if($(W.$('.isReboot')).is(':checked')){
+				 isReboot='true'
+			 }else{
+				 isReboot='false'
+			 } 
+			 resultcmdLineType = data.rebootURL+'@@@'+data.rebootSize+'@@@'+data.rebootTime+'@@@'+isReboot;
+			 break;
+			 
+		case "shell":
+			 resultcmdLineType = data.shellDefine;
+			 break;
+			 
+	   default:break;
+			 
+		}
+	 return resultcmdLineType;
+}
+
+  W.on('load', function()
+		{
+		 reset()
+		 time=data.kpiUTCSec
+		 W.validate($(W.$('form')))
+		}) 
+</script>

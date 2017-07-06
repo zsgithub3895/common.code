@@ -22,14 +22,20 @@ import java.util.Set;
 
 
 public class TcpLongLinkDemo extends Thread{
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 		long start = System.currentTimeMillis();
-		try {
+		
+					Socket client = new Socket("10.223.138.141", 5555);
+					// 获取Socket的输出流，用来发送数据到服务端
+					PrintStream out = new PrintStream(client.getOutputStream());
+					out.println("1220170328142954STBAgent1.01.001002034100000054710012");
+		
+		/*try {
 			runCause();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		/*try {
 			// 客户端请求与10.223.138.124在20006端口建立TCP连接
 			Socket client = new Socket("127.0.0.1", 2222);

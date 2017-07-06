@@ -1,0 +1,43 @@
+<div class="panel minimal minimal-gray">
+
+	<div class="panel-heading">
+		<div class="panel-title"><h4>故障挖掘</h4></div>
+		<div class="panel-options">
+			
+			<ul class="nav nav-tabs">
+			    <li class="active"><a href="#fault-analysis" data-toggle="tab">故障分析</a></li>
+				<li><a href="#fault-list" data-toggle="tab">故障挖掘</a></li>
+				
+			</ul>
+		</div>
+	</div>
+	
+	<div class="panel-body">
+		
+		<div class="tab-content">
+		
+		    <div class="tab-pane active" id="fault-analysis">
+				<w href="displays/layout/layout_ltr.html?left=displays/content/fault_tree.html&amp;right=displays/content/faultmgmt/fault_analysis.html"></w>
+			</div> 
+			
+			<div class="tab-pane" id="fault-list">
+			</div>
+			
+		</div>
+		
+	</div>
+	
+</div>
+
+<script>
+W.on('load', function()
+{
+	var
+		height     = public_vars.$tabContent.height(),
+		panel      = $(W.$('.panel'      )).height(height - 2),
+		panelBody  = $(W.$('.panel-body' )).css('padding', '0').height(height - 38),
+		tabContent = $(W.$('.tab-content')).height(panelBody.height()),
+		tabPane    = $(W.$('.tab-pane'   )).height(tabContent.height())
+})
+
+</script>

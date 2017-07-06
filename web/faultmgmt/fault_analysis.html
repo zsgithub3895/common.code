@@ -1,0 +1,369 @@
+<link rel="import" href="widgets/w-analysis-table.html">
+
+<link rel="import" href="widgets/w-select.html">
+
+<link rel="import" href="widgets/w-datepicker.html">
+
+<style>
+.analysis_container {
+	height: 100%;
+	border: 1px solid #f5f5f6
+}
+.analysis_up {
+	height: 58%
+}
+.timeTitle {
+	border-bottom: 1px solid #f5f5f6;
+	height: 12%
+}
+.timeTitle_period {
+	width: 25%;
+	float: left
+}
+.timeTitle_time {
+	width: 25%;
+	float: left
+}
+.analysis_title {
+	border-bottom: 1px solid #f5f5f6;
+	height: 8%;
+	margin-top: 1px;
+	background-color: #f5f5f6
+}
+.analysis_title_fir {
+	width: 25%;
+	float: left
+}
+.analysis_title_sec {
+	width: 25%;
+	float: left
+}
+
+.analysis_title_thr {
+	width: 25%;
+	float: left
+}
+.analysis_title_fou {
+	width: 25%;
+	float: left
+}
+.analysis_body {
+	border: 1px solid #f5f5f6;
+	height: 80%;
+	margin-top: 1px
+}
+.analysis_pie_fir {
+	border: 2px solid #f5f5f6;
+	height: 100%;
+	width: 25%;
+	float: left;
+	overflow-y: scroll
+}
+.analysis_fault_sec {
+	border-right: 2px solid #f5f5f6;
+	height: 100%;
+	width: 25%;
+	float: left
+}
+.analysis_event_thr {
+	border-right: 2px solid #f5f5f6;
+	height: 100%;
+	width: 25%;
+	float: left
+}
+.analysis_http_fou {
+	border-right: 2px solid #f5f5f6;
+	height: 100%;
+	width: 25%;
+	float: left
+}
+.analysis_down {
+	border-top: 1px solid #f5f5f6;
+	margin-top: 1px;
+	height: 40%
+}
+</style>
+
+<div class="analysis_container">
+
+	<div class="analysis_up">
+
+		<div class="timeTitle">
+
+			<div class="timeTitle_period">
+				<w-select lookup:="{HOUR: '小时', DAY: '天'}" value:="dataALL.period" events:="{ onChange: loadData }"></w-select>
+			</div>
+
+			<div class="timeTitle_time">
+				<w-datepicker time value:="dataALL.kpiUTCSec" events:="{ onChange: loadData }"></w-datepicker>
+			</div>
+		</div>
+
+		<div class="analysis_title">
+			<div class="analysis_title_fir">${CODE_FULLNAME_MAP[dataALL.provinceId]}故障分布</div>
+
+			<div class="analysis_title_sec">${CODE_FULLNAME_MAP[dataALL.cityId == 'ALL' ? dataALL.provinceId : dataALL.cityId]}故障分布</div>
+
+			<div class="analysis_title_thr">${CODE_FULLNAME_MAP[dataALL.cityId == 'ALL' ? dataALL.provinceId : dataALL.cityId]}事件分布</div>
+
+			<div class="analysis_title_fou">${CODE_FULLNAME_MAP[dataALL.cityId == 'ALL' ? dataALL.provinceId : dataALL.cityId]}http错误分布</div>
+		</div>
+
+		<div class="analysis_body">
+			<div class="analysis_pie_fir">
+				<div ref:="analysis_pie" style="width: 100%; height: 100%"></div>
+			</div>
+
+			 <div class="analysis_fault_sec">
+				<w-table ref:="faultTable"  method="POST" url="faultPie/lagReasonDistTable" data:="dataALL" columns:="columns_fault" paginator="false"></w-table>
+			</div>
+           
+			<div class="analysis_event_thr">
+				<w-table method="POST" url="faultPie/eventTrendTable" data:="dataALL" columns:="columns_event" paginator="false"></w-table>
+			</div>
+ 
+			<div class="analysis_http_fou">
+				<w-table method="POST" url="faultPie/httpErrorTable" data:="dataALL" columns:="columns_httpfault" paginator="false"></w-table>
+			</div> 
+
+		</div>
+
+	</div>
+
+	<div class="analysis_down">
+		<w-table columns:="columns" paginator="false"></w-table>
+	</div>
+
+</div>
+
+
+
+<script>
+	var formatter = 'YYYY/MM/DD HH:mm:ss',faultTable,
+
+	current_user = JSON.parse($.cookie('current-user')),
+
+	CODE_FULLNAME_MAP = yield W.getJSON('displays/content/homepage/code_fullname_map.json'),
+
+	FULLNAME_CODE_MAP = yield W.getJSON('displays/content/homepage/fullname_code_map.json'),
+
+	$chart, $settings, analysis_pie,
+
+	dataALL = {
+		provinceId:'ALL',
+		//provinceId : current_user.provinceCode,
+
+		//cityId : current_user.cityCode
+       cityId : 'ALL'
+	//period:     'HOUR'
+
+	/* kpiUTCSec:  moment().format(formatter) */
+
+	},
+
+	columns_fault = [
+	{title : '故障类型',field : 'lagType'},
+	{title : '发生次数',field : 'lagCount'},
+	{title : '占比',field : 'lagPercent'}
+	],
+
+	columns_event = [
+	{title : '事件类型',field : 'lagType'},
+	{title : '发生次数',field : 'lagCount'},
+	{title : '占比',field : 'lagPercent'}
+	],
+
+	columns_httpfault = [
+	{title : 'http错误类型',field : 'lagType'},
+	{title : '发生次数',field : 'lagCount'},
+	{title : '占比',field : 'lagPercent'}
+	],
+
+	columns = [{ title: '发生时间' }, { title: 'HTTP错误' }, { title: '机顶盒ID' }, { title: '地域' }, { title: '终端IP' }, { title: '运营商' }, { title: 'CDN' }, { title: '次数' }, { title: 'URL' }]
+
+	function refresh()
+	{
+		faultTable.refresh()
+	}
+	
+	function reset(){
+		columns=[{ title: '发生时间' }, { title: 'HTTP错误' }, { title: '机顶盒ID' }, { title: '地域' }, { title: '终端IP' }, { title: '运营商' }, { title: 'CDN' }, { title: '次数' }, { title: 'URL' }]
+	}
+	
+	function editTrml(e, row, $el, field)
+	{
+		alert(row.lagType)
+		columns=[{ title: '时间' }, { title: 'HTTP错误' }, { title: '机顶盒ID' }, { title: '地域' }, { title: '终端IP' }, { title: '运营商' }, { title: 'CDN' }, { title: '次数' }, { title: 'URL' }]
+	}
+	
+	W.on('province:data', function(e)
+	{
+		dataALL.provinceId = e.detail.provinceId
+
+		$chart.showLoading()
+
+		var total = 0
+
+		W.post('faultPie/lagReasonDistPie', dataALL).then(
+				function(res) {
+
+					_.map(res, function(item, index)
+
+					{
+
+						var serie = {}
+
+						var name_one = CODE_FULLNAME_MAP[index]
+
+						serie.name = name_one
+
+						serie.value = item
+
+						$settings.legend.data.push(serie.name)
+
+						$settings.series[0].data.push({
+							name : serie.name,
+							value : serie.value
+						})
+
+						total += res[index]
+
+					})
+
+					_.map($settings.series[0].data, function(serie)
+
+					{
+
+						serie.percent = total === 0 ? 0 : _.round(serie.value
+								/ total * 100, 2)
+
+					})
+
+					$chart.hideLoading()
+
+					$chart.setOption(DEFAULT_SETTINGS)
+
+					$settings.legend.data = []
+
+					$settings.series[0].data = []
+
+				})
+
+	})
+
+	W.on('area:change', function(e){
+		dataALL.provinceId = e.detail.provinceId
+		dataALL.cityId = e.detail.cityId
+	})
+
+	W.on('tree:select', function(e)
+	{
+		alert(e.detail.provinceId)
+		dataALL.provinceId = e.detail.provinceId
+		W.fire('province:data', dataALL)
+	})
+
+	W.on('load', function(e)
+	{
+		$chart = echarts.init(analysis_pie, 'macarons')
+
+		$settings = _.clone(DEFAULT_SETTINGS)
+
+		W.fire('province:data', dataALL)
+		
+		faultTable.on('clickRow', editTrml)
+		
+		reset()
+	})
+
+	
+	var DEFAULT_SETTINGS = {
+		tooltip : {
+			formatter : "{b} : {c} ({d}%)"
+		},
+		legend : {
+			orient : 'vertical',
+			left : 'right',
+			align : 'left',
+			top : 'center',
+			data : [],
+			formatter : function(name)
+			{
+				return _.template('<%= name %>:<%=value%>(<%= percent %>%)')(
+						_.findWhere($settings.series[0].data, {
+							name : name
+						}))
+			}
+
+		},
+
+		series : [ {
+
+			type : 'pie',
+
+			radius : '48%',
+
+			center : [ '25%', '50%' ],
+
+			data : [],
+
+			label : {
+
+				normal : {
+
+					show : false
+
+				},
+
+				emphasis : {
+
+					show : false
+
+				}
+
+			},
+
+			labelLine : {
+
+				normal : {
+
+					show : false
+
+				}
+
+			},
+
+			itemStyle : {
+
+				emphasis : {
+
+					shadowBlur : 10,
+
+					shadowOffsetX : 0,
+
+					shadowColor : 'rgba(0, 0, 0, 0.5)'
+
+				}
+
+			}
+
+		} ]
+
+	}
+
+	function loadData(running) {
+
+		fireLoadData()
+
+	}
+
+	function fireLoadData() {
+
+		_.each(W.parent.children, function(childW) {
+
+			childW.fire('load:data', data)
+
+		})
+
+	}
+</script>
