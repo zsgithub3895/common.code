@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
+import javax.swing.text.AbstractDocument.BranchElement;
+
 public class BinaryTreeNoRec {
 	/**
 	 * 12
@@ -27,7 +29,7 @@ public class BinaryTreeNoRec {
                 root=root.left;
             }
             root=s.pop();
-            root=root.right;//如果是null，出栈并处理右子树  
+            root=root.right;//如果是null，出栈并处理右子树
         }
         System.out.println("先序遍历：");
 		for (Integer i : q)
@@ -94,6 +96,37 @@ public class BinaryTreeNoRec {
 		for (Integer i : q)
 			System.out.print(i + " ");
 	}
+	
+/**层序遍历* 
+offer，add区别：
+如果想在一个满的队列中加入一个新项，多出的项就会被拒绝： 新的offer方法就可以起作用了。它不是对调用 add()方法抛出一个 unchecked 异常，而只是得到由 offer() 返回的 false。 
+
+poll，remove区别：remove()和 poll()方法都是从队列中删除第一个元素。remove() 的行为与 Collection 接口的版本相似，
+但是新的 poll()方法在用空集合调用时不是抛出异常，只是返回 null。因此新的方法更适合容易出现异常条件的情况。
+
+peek，element区别：element() 和 peek()用于在队列的头部查询元素。
+与 remove()方法类似，在队列为空时，element()抛出一个异常，而 peek()返回 null*/
+	public static void levelIterator(BinaryTree root){
+		if(root == null) return;
+		Queue<BinaryTree> q = new LinkedList<BinaryTree>();
+		Queue<Integer> res = new LinkedList<Integer>();//用来存放遍历的结果
+		q.offer(root);
+		while(!q.isEmpty()){
+			BinaryTree bt = q.poll();
+			res.offer(bt.value);
+			if(bt.left != null){
+				q.offer(bt.left);
+			}
+			if(bt.right != null){
+				q.offer(bt.right);
+			}
+		}
+		
+		System.out.println("层序遍历：");
+		for (Integer i : res)
+			System.out.print(i + " ");
+	}
+	
 
 	public static void main(String[] args) {
 		int[] array = {12,8,5,9,18};
@@ -106,5 +139,7 @@ public class BinaryTreeNoRec {
 		inOrderfun(root);
 		System.out.println();
 		postOrderfun(root);
+		System.out.println();
+		levelIterator(root);
 	}
 }
