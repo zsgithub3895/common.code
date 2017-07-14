@@ -25,10 +25,10 @@ public class TcpLongLinkDemo extends Thread{
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		long start = System.currentTimeMillis();
 		
-					Socket client = new Socket("10.223.138.141", 5555);
+					Socket client = new Socket("10.223.138.141", 5142);
 					// 获取Socket的输出流，用来发送数据到服务端
 					PrintStream out = new PrintStream(client.getOutputStream());
-					out.println("1220170328142954STBAgent1.01.001002034100000054710012");
+					out.println("1111111111111tgspzf3022kjbb2017071414295420170714142954111111111111");
 		
 		/*try {
 			runCause();

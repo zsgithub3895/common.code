@@ -55,11 +55,11 @@ public class MergerKList {
 		}
 
 		while (!queue.isEmpty()) {
-			ListNode n = queue.poll();
-			curr.next = n;
+			ListNode temp = queue.poll();
+			curr.next = temp;
 			curr = curr.next;
-			if (n.next != null)
-				queue.offer(n.next);
+			if (temp.next != null)
+				queue.offer(temp.next);
 		}
 		return dummyHead.next;
 	}
