@@ -66,7 +66,7 @@ public class AddTwoNumbers {
 			System.out.print(no.val + "  ");
 			no = no.next;
 		}
-		long t2 = System.currentTimeMillis();
+		/*long t2 = System.currentTimeMillis();
 		System.out.println("++++++"+(t2-t));
 		System.out.println();
 		ListNode node = new AddTwoNumbers().addTwoNumbersQQ(l1, l2);
@@ -75,6 +75,6 @@ public class AddTwoNumbers {
 			node = node.next;
 		}
 		long t3 = System.currentTimeMillis();
-		System.out.println("++++++"+(t3-t2));
+		System.out.println("++++++"+(t3-t2));*/
 	}
 }
