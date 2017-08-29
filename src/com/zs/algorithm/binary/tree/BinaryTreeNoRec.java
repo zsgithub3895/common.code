@@ -129,7 +129,7 @@ peek，element区别：element() 和 peek()用于在队列的头部查询元素�
 	
 
 	public static void main(String[] args) {
-		int[] array = {12,8,5,9,18};
+		int[] array = {12,8,18};
 		BinaryTree root = new BinaryTree(array[0]);//创建二叉树
 		for(int i=1;i<array.length;i++){
 		   root.insert(root, array[i]);//向二叉树中插入数据
