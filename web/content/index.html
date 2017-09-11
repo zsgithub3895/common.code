@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="format-detection" content="telephone=no">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/codemirror.css">
+</head>
+<body style="overflow-y: hidden; margin: 0">
+	<script src="js/w.js"></script>
+	<script src="js/codemirror.js"></script>
+	<script src="mode/xml/xml.js"></script>
+	<script src="mode/javascript/javascript.js"></script>
+	<script src="mode/css/css.js"></script>
+	<script src="mode/htmlmixed/htmlmixed.js"></script>
+	<input type="text" value:="todo_new"
+		onkeypress:="if(e.keyCode === 13){
+    	 todos.push(todo_new);
+    	 todo_new='';
+    	 }">
+   	 <ul for:="todo of todos">
+   	 	<li>
+   	 		<span>${todo}</span>
+   	 		<button  onclick:="todos.splice(todo$index,1)">X</button>
+   	 	</li>
+   	 </ul>
+</body>
+<script>
+	var todos = [ 'W.js 培训' ], todo_new
+</script>
+</html>

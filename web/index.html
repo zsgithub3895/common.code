@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/codemirror.css">
+</head>
+<body style="overflow-y:hidden;margin:0">
+    <div style="height:100%;width:50%;float:left">
+        <template w-app>
+            <w href="var:source"></w>
+        </template>
+    </div>
+    <textarea id="editor" style="height:100%;width:50%;float:right"></textarea>
+    <script src="js/w.js"></script>
+    <script src="js/codemirror.js"></script>
+    <script src="mode/xml/xml.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="mode/css/css.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+</body>
+<script>
+
+var source = window.sessionStorage.source || '<h1>Hello W.js</h1>';
+
+var $editor = document.getElementById('editor');
+$editor.value = source;
+
+var editor = CodeMirror.fromTextArea($editor, {
+    lineNumbers: true,
+    mode: 'htmlmixed'
+});
+editor.on('change', function(instance, change_obj) {
+    source = window.sessionStorage.source = editor.getValue();
+    W.hot_reload('var:source');
+});
+
+</script>
+</html>
