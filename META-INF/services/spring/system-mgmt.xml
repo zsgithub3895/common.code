@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="sysmgmt.manager.OperateLogManager" class="com.sihuatech.oms.system.manager.OperateLogManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>	
+	
+	<bean id="oms.sysmgmt.userService" class="com.sihuatech.oms.system.service.UserService">
+	    <property name="userManager" ref="oms.sysmgmt.UserManager"/>
+	    <property name="securityService" ref="securityService" />
+	</bean>
+	
+	<bean id="oms.sysmgmt.UserManager" class="com.sihuatech.oms.system.manager.UserManager">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="advUserService" class="com.sihuatech.oms.system.AdvancedUserService">
+		<property name="userManager" ref="common.security.userManager" />
+		<property name="securityService" ref="securityService"></property>
+	</bean>
+	
+	<bean id="sysmgmt.service.LoggerServiceExt" class="com.sihuatech.oms.system.LoggerServiceExt">
+		<property name="operateLogManager" ref="sysmgmt.manager.OperateLogManager" />
+		<property name="userManager" ref="common.security.userManager" />
+	</bean>
+	
+	<bean id="oms.sysmgmt.SysOperateLogManager" class="com.sihuatech.oms.system.manager.SysOperateLogManager">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="oms.sysmgmt.OperateLogUtil" class="com.sihuatech.oms.system.service.OperateLogUtil">
+	    <property name="sysOperateLogManager" ref="oms.sysmgmt.SysOperateLogManager" />
+	</bean>
+	
+	
+</beans>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="readonly" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>否（可增加删除枚举值）=1,是（不可增加删除枚举值）=2</value>
+		</property>
+	</bean>
+	
+	<bean id="defId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.typecode,i.NAME FROM OW_COMM_TASK_DEF i;</value>
+		</property>
+	</bean>
+	
+	<bean id="auditState" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>待审核=0,审核通过=1,审核不通过=2</value>
+		</property>
+	</bean>
+	
+	<bean id="origin" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>人工新增=0,平台对接新增=1</value>
+		</property>
+	</bean>
+	
+	<bean id="isDeleted" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>正常=0,删除=1</value>
+		</property>
+	</bean>
+	
+	<bean id="status" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>进行中=1,结束=2</value>
+		</property>
+	</bean>
+	
+	<bean id="competitionId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select t.ID,t.COMPETITION_NAME FROM T_COMPETITION t where t.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="type" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select t.ID,t.NAME FROM T_SPORTS t;</value>
+		</property>
+	</bean>
+	
+	<bean id="matchStatus" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>未开始=0,进行中=1,已结束=2</value>
+		</property>
+	</bean>
+	
+	<bean id="groupId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select t.ID,t.STAGE_ROUND_NAME FROM T_STAGEROUND t where  t.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="teamId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.ID,i.TEAM_NAME FROM T_FOOTBALL_TEAM i where i.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="matchId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.ID,i.MATCH_NAME FROM T_FOOTBALL_MATCH i where i.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="playerId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.ID,i.PLAYER_NAME FROM T_FOOTBALL_PLAYER i where i.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="seasonId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.ID,i.SEASON_NAME FROM T_SEASON i where i.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="position" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>门将=1,边后卫=2,中后卫=3,后腰=4,边前卫=5,前腰=6,中锋=7,影锋=8,边锋=9</value>
+		</property>
+	</bean>
+	
+	<bean id="isStarter" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>是=1,否=2</value>
+		</property>
+	</bean>
+	
+	<bean id="stageRoundId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select t.ID,t.STAGE_ROUND_NAME FROM T_STAGEROUND t where t.IS_DELETED=0;</value>
+		</property>
+	</bean>
+	
+	<bean id="userId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select t.ID,t.NAME FROM SECURITY_DEFAULT_USER t;</value>
+		</property>
+	</bean>
+	
+		<bean id="orderState" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>未预约=0,预约成功=1</value>
+		</property>
+	</bean>
+	
+</beans>

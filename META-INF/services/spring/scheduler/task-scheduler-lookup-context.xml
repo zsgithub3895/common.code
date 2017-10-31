@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="taskStatusEnum" class="com.onewaveinc.core.lookup.LookupBean">
+        <property name="lookup">
+            <value>text</value>
+        </property>
+        <property name="source">
+            <value>正常运行=0,任务暂停=1</value>
+        </property>
+    </bean>
+    <bean id="startupFrequencyEnum" class="com.onewaveinc.core.lookup.LookupBean">
+        <property name="lookup">
+            <value>text</value>
+        </property>
+        <property name="source">
+            <value>每天=0,每月=2,单次=3,固定间隔分钟=4,固定间隔小时=5</value>
+        </property>
+    </bean>
+</beans>

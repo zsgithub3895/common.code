@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="oms.basic.EnumerationService" class="com.sihuatech.oms.basic.service.EnumerationService">
+	    <property name="enumerationManager" ref="oms.basic.EnumerationManager"/>
+	</bean>
+	
+	<bean id="oms.basic.EnumerationManager" class="com.sihuatech.oms.basic.manager.EnumerationManager">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+</beans>

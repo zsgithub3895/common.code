@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="skinExt" class="com.sihuatech.oms.mgmt.skin.SkinExt">
+		<property name="skinService" ref="skinService" />
+	</bean>
+	
+	<bean id="skinService" class="com.sihuatech.oms.mgmt.skin.SkinService">
+		<property name="skinDir">
+			<value>${skin.conf.dir}</value>
+		</property>
+	</bean>
+	
+	<bean id="taskService" class="com.sihuatech.oms.task.service.TaskService">
+        <property name="schedulerManager" ref="schedulerManager"></property>
+        <property name="taskManager"><ref bean="taskManager" /></property>
+    	<property name="taskDefManager">
+			<ref bean="taskDefManager" />
+		</property>
+    </bean>
+    
+     <bean id="matchRemindService" class="com.sihuatech.oms.content.service.MatchRemindService">
+        <property name="matchRemindManager" ref="matchRemindManager"></property>
+        <property name="remindManager" ref="remindManager"></property>
+        <property name="tempRemindManager" ref="tempRemindManager"></property>
+    </bean>
+    
+    <bean id="matchRemindManager" class="com.sihuatech.oms.content.manager.MatchRemindManager">
+        <property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property> 
+    </bean>
+    
+     <bean id="remindManager" class="com.sihuatech.oms.content.manager.RemindManager">
+        <property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property> 
+    </bean>
+    
+    <bean id="tempRemindManager" class="com.sihuatech.oms.content.manager.TempRemindManager">
+        <property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property> 
+    </bean>
+    
+    <bean id="seasonService" class="com.sihuatech.oms.content.service.SeasonService">
+        <property name="seasonManager" ref="seasonManager"/>   
+        <property name="securityService" ref="securityService" />
+        <property name="stageRoundManager" ref="stageRoundManager"/> 
+    </bean>
+    
+    <bean id="seasonManager" class="com.sihuatech.oms.content.manager.SeasonManager">
+        <property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property> 
+    </bean>
+    
+    <bean id="footballTeamGroupScoreService" class="com.sihuatech.oms.rank.service.FootballTeamGroupScoreService">
+        <property name="footballTeamGroupScoreManager" ref="footballTeamGroupScoreManager"/>   
+    </bean>
+    
+    <bean id="footballTeamGroupScoreManager" class="com.sihuatech.oms.rank.manager.FootballTeamGroupScoreManager">
+        <property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property> 
+    </bean>
+    
+    <bean id="footballPlayerCompRankService" class="com.sihuatech.oms.rank.service.FootballPlayerCompRankService">
+        <property name="footballPlayerCompRankManager" ref="footballPlayerCompRankManager"/>   
+    </bean>
+    
+    <bean id="footballPlayerSeasonRankService" class="com.sihuatech.oms.rank.service.FootballPlayerSeasonRankService">
+        <property name="footballPlayerSeasonRankManager" ref="footballPlayerSeasonRankManager"/>   
+    </bean>
+
+	<bean id="sportsManager" class="com.sihuatech.oms.content.manager.SportsManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+    <bean id="sportsService" class="com.sihuatech.oms.content.service.SportsService">
+		<property name="sportsManager" ref="sportsManager" />
+	</bean>
+	<bean id="sportsServiceExt" class="com.sihuatech.oms.content.SportsServiceExt">
+		<property name="sportsService" ref="sportsService" />
+		<property name="competitionService" ref="competitionService" />
+	</bean>
+	
+	<bean id="teamRecordManager" class="com.sihuatech.oms.content.manager.TeamRecordManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="teamRecordService" class="com.sihuatech.oms.content.service.TeamRecordService">
+		<property name="teamRecordManager" ref="teamRecordManager" />
+	</bean>
+	<!-- 比赛 -->
+	<bean id="footballMatchManager" class="com.sihuatech.oms.content.manager.FootballMatchManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="footballMatchService" class="com.sihuatech.oms.content.service.FootballMatchService">
+		<property name="footballMatchManager" ref="footballMatchManager" />
+		<property name="matchTeamManager" ref="matchTeamManager" />
+		<property name="matchTeamDetailManager" ref="matchTeamDetailManager" />
+		<property name="matchPlayerDetailManager" ref="matchPlayerDetailManager" />
+		<property name="operatePositionManager" ref="operatePositionManager" />
+	</bean>
+	
+	<!-- 赛事 -->
+	<bean id="competitionManager" class="com.sihuatech.oms.content.manager.CompetitionManager" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="competitionService" class="com.sihuatech.oms.content.service.CompetitionService">
+		<property name="competitionManager" ref="competitionManager" />
+		<property name="seasonManager" ref="seasonManager" />
+	</bean>
+	
+	<bean id="matchTeamService" class="com.sihuatech.oms.content.service.MatchTeamService">
+		<property name="matchTeamManager" ref="matchTeamManager" />
+		<property name="matchPlayerManager" ref="matchPlayerManager" />
+		<property name="securityService" ref="securityService" />
+		<property name="footballMatchManager" ref="footballMatchManager" />
+	</bean>
+	
+	<bean id="matchTeamManager" class="com.sihuatech.oms.content.manager.MatchTeamManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="publishRecordManager" class="com.sihuatech.oms.publish.manager.PublishRecordManager">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="publishRecordService" class="com.sihuatech.oms.publish.service.PublishRecordService">
+	    <property name="publishRecordManager" ref="publishRecordManager" />
+	</bean>
+	<bean id="publishService" class="com.sihuatech.oms.publish.service.PublishService">
+	    <property name="siteService" ref="siteService"></property>
+	    <property name="publishRecordService" ref="publishRecordService"></property>
+	    <property name="teamScoreRankManager" ref="footballTeamGroupScoreManager"></property>
+	    <property name="teamRankManager" ref="teamRankManager"></property>
+	    <property name="playerComRankManger" ref="footballPlayerCompRankManager"></property>
+	    <property name="playerSeasonRankManager" ref="footballPlayerSeasonRankManager"></property>
+	    <property name="operatePositionManager" ref="operatePositionManager"></property>
+	    <property name="materialManager" ref="materialManager"></property>
+	</bean>
+
+	<bean id="matchPlayerService" class="com.sihuatech.oms.content.service.MatchPlayerService">
+		<property name="matchPlayerManager" ref="matchPlayerManager" />
+		<property name="securityService" ref="securityService" />
+	</bean>
+	
+	<bean id="matchPlayerManager" class="com.sihuatech.oms.content.manager.MatchPlayerManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="contentManager" class="com.sihuatech.oms.content.manager.ContentManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- <bean id="contentService" class="com.sihuatech.oms.content.service.ContentService">
+		<property name="contentManager" ref="contentManager" />
+	</bean> -->
+	
+	<bean id="stageRoundService" class="com.sihuatech.oms.content.service.StageRoundService">
+		<property name="stageRoundManager" ref="stageRoundManager" />
+		<property name="footballMatchManager" ref="footballMatchManager" />
+	</bean>
+	
+	<bean id="stageRoundManager" class="com.sihuatech.oms.content.manager.StageRoundManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 球队排名 -->
+	<bean id="teamRankService" class="com.sihuatech.oms.rank.service.TeamRankService">
+		<property name="teamRankManager" ref="teamRankManager" />
+	</bean>
+	
+	<bean id="teamRankManager" class="com.sihuatech.oms.rank.manager.TeamRankManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="footballPlayerCompRankManager" class="com.sihuatech.oms.rank.manager.FootballPlayerCompRankManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="footballPlayerSeasonRankManager" class="com.sihuatech.oms.rank.manager.FootballPlayerSeasonRankManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="siteService" class="com.sihuatech.oms.site.service.SiteService">
+		<property name="siteManager" ref="siteManager" />
+	</bean>
+	
+	<bean id="siteManager" class="com.sihuatech.oms.site.manager.SiteManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 运营位 -->
+	<bean id="operatePositionManager" class="com.sihuatech.oms.content.manager.OperatePositionManager" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="operatePositionService" class="com.sihuatech.oms.content.service.OperatePositionService">
+		<property name="operatePositionManager" ref="operatePositionManager" />
+		<property name="materialManager" ref="materialManager" />
+	</bean>
+	<!-- 图片文字运营位 -->
+	<bean id="materialManager" class="com.sihuatech.oms.content.manager.MaterialManager" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="materialService" class="com.sihuatech.oms.content.service.MaterialService">
+		<property name="materialManager" ref="materialManager" />
+	</bean>
+	
+	<!-- 比赛球队详情 -->
+	<bean id="matchTeamDetailManager" class="com.sihuatech.oms.content.manager.MatchTeamDetailManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="matchTeamDetailService" class="com.sihuatech.oms.content.service.MatchTeamDetailService">
+		<property name="matchTeamDetailManager" ref="matchTeamDetailManager" />
+	</bean>
+	
+	<!-- 比赛球员详情 -->
+	<bean id="matchPlayerDetailManager" class="com.sihuatech.oms.content.manager.MatchPlayerDetailManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="matchPlayerDetailService" class="com.sihuatech.oms.content.service.MatchPlayerDetailService">
+		<property name="matchPlayerDetailManager" ref="matchPlayerDetailManager" />
+	</bean>
+	<!-- 定时任务 -->
+	<bean id="competitionTask" class="com.sihuatech.oms.synchronous.service.CompetitionTask">
+		<property name="COMPETITION_URL" value="${competition.url}"></property>
+		<property name="competitionManager" ref="competitionManager" />
+		<property name="seasonManager" ref="seasonManager" />
+		<property name="stageRoundManager" ref="stageRoundManager" />
+		<property name="matchTeamManager" ref="matchTeamManager" />
+		<property name="matchPlayerManager" ref="matchPlayerManager" />
+		<property name="footballMatchManager" ref="footballMatchManager" />
+		<property name="footballPlayerCompRankManager" ref="footballPlayerCompRankManager"/>
+		<property name="footballPlayerSeasonRankManager" ref="footballPlayerSeasonRankManager"/>   
+		<property name="teamRankManager" ref="teamRankManager" />
+		<property name="footballTeamGroupScoreManager" ref="footballTeamGroupScoreManager"/> 
+		
+		<property name="COMPETITION_INFO" value="${competition.info}"></property>
+		<property name="SEASON_INFO" value="${season.info}"></property>
+		<property name="STAGE_INFO" value="${stage.info}"></property>
+		<property name="MATCH_INFO" value="${match.info}"></property>
+		<property name="TEAM_INFO" value="${team.info}"></property>
+		<property name="PLAYER_INFO" value="${player.info}"></property>
+		<property name="TEAM_SCORE_RANK" value="${team.score.rank}"></property>
+		<property name="TEAM_RANK" value="${team.rank}"></property>
+		<property name="PLAYER_SEASON_RANK" value="${player.season.rank}"></property>
+		<property name="PLAYER_COMPETITION_RANK" value="${player.competition.rank}"></property>
+	</bean>
+	
+	<bean id="pictureUploadService" class="com.sihuatech.oms.common.PictureUploadService">
+		<property name="tempDir">
+			<value>${uploadpic.tempdir}</value>
+		</property>
+		<!-- 图片上传本地路径 -->	
+		<property name="localDir">
+			<value>${uploadpic.tempdir}</value>
+		</property>
+		<!-- 图片上传ftp配置 -->
+		<property name="ftpPath">
+			<value>${pic.ftp.dir}</value>
+		</property>
+	</bean>
+	
+</beans>

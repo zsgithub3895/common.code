@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus>
+	<menu ref="10">
+		<menu id="500" title="运营数据管理" index="1" privilege="运营数据管理">
+			<menu id="501" title="赛事项目" index="1" url="pages/content/sports/sports_main" privilege="赛事项目"></menu>
+			<menu id="502" title="赛事" index="2" url="pages/content/competition/competitionMain" privilege="赛事"></menu>
+			<menu id="503" title="赛季" index="3" url="pages/content/season/seasonList" privilege="赛季"></menu>
+			<menu id="504" title="轮次" index="4" url="pages/content/stageRound/stageRoundMain" privilege="轮次"></menu>
+			<menu id="505" title="比赛" index="5" url="pages/content/match/footMatchMain" privilege="比赛"></menu>
+			<menu id="506" title="球队" index="6" url="pages/content/team/team" privilege="球队"></menu>
+			<menu id="507" title="球员" index="7" url="pages/content/player/player" privilege="球员"></menu>
+		    <menu id="508" title="比赛球队统计" index="8" url="pages/content/matchTeamDetail/matchTeamDetail" privilege="比赛球队统计"></menu>
+		    <menu id="509" title="比赛球员统计" index="9" url="pages/content/playerDetail/list" privilege="赛事球员统计"></menu>
+		    <menu id="510" title="运营位" index="10" url="pages/content/operatePosition/operatePositionMain" privilege="运营位"></menu>
+		</menu>
+		
+		<menu id="600" title="基础数据管理" index="1">
+			<menu id="601" title="枚举值管理" index="1" url="pages/basic/enum/enumList"></menu>
+		</menu>
+		
+		<menu id="700" title="榜单管理" index="1">
+			<menu id="701" title="球队小组赛积分排行" index="1" url="pages/rank/teamGroupScore/list"></menu>
+			<menu id="702" title="球队排名" index="2" url="pages/rank/teamRank/teamRankMain" privilege="球队排名"></menu>
+			<menu id="703" title="球员赛事排名" index="3" url="pages/rank/playerCompRank/list"></menu>
+			<menu id="704" title="球员赛季排名" index="4" url="pages/rank/playerSeasonRank/list"></menu>
+		</menu>
+		<menu ref="150">
+			<menu id="1501" title="日志管理" index="2" > <!-- privilege="日志管理" -->
+				<menu id="15011" title="系统日志" url="pages/log/log_systemLog"  index="1"  /><!-- privilege="系统日志" -->
+			</menu>
+		</menu>
+	</menu>
+</menus>
