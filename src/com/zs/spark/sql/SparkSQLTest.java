@@ -1,4 +1,4 @@
-package com.zs.spark.sql;
+/*package com.zs.spark.sql;
 import static org.apache.spark.sql.functions.count;
 import static org.apache.spark.sql.functions.countDistinct;
 import static org.apache.spark.sql.functions.sum;
@@ -154,7 +154,7 @@ public class SparkSQLTest {
 				logger.info("+++[LAG]RDD分区数：" + rdd.getNumPartitions());
 				
 				SQLContext sqlContext = SQLContext.getOrCreate(rdd.context());
-				DataFrame dataFrame = sqlContext.createDataFrame(rdd, LagPhaseBehaviorLog.class);
+				DataFrame dataFrame = null;//sqlContext.createDataFrame(rdd, LagPhaseBehaviorLog.class);
 				dataFrame.registerTempTable("LagPhaseBehaviorLog");
 				dataFrame.persist(StorageLevel.MEMORY_AND_DISK_SER());
 				long count = dataFrame.count();
@@ -170,14 +170,14 @@ public class SparkSQLTest {
 		jssc.awaitTermination();
 	}
 	
-	/**
+	*//**
 	 * 4|3333|123000006|cwj2|huashu2|jiangsu2|najing|2.1.7.13|20171114152500|20171114152500|1|100|www.baidu.com|1|192.168.1.23|RESERVE1|RESERVE2
 4|3333|123000006|cwj2|huashu2|jiangsu2|nanjing|2.1.7.13|20171114152500|20171114152500|11|100|www.baidu.com|1|192.168.1.23|RESERVE1|RESERVE
-	 */
+	 *//*
 	private static void streamAndPlayByDimension(DataFrame dataFrame) {
 			GroupedData data = dataFrame.cube(DIMENSION_WARN[0],DIMENSION_WARN[1],"kPIUTCSec");
 			data.agg(countDistinct("hasID"),count("hasID"),sum("hasID")).filter("kPIUTCSec is not null").show();
-			/*Row[] stateRow = data.agg(countDistinct("hasID"),countDistinct("probeID")).filter("KPIUTCSec is not null").collect();
+			Row[] stateRow = data.agg(countDistinct("hasID"),countDistinct("probeID")).filter("KPIUTCSec is not null").collect();
 			if (stateRow == null || stateRow.length == 0) {
 				return;
 			} else {
@@ -195,6 +195,6 @@ public class SparkSQLTest {
 					}
 					String key = pID + "#"+ sourceIP + "\t"  + row.getString(2);
 					logger.info("+++++++++++++++++++++++++++"+pID + "#"+ sourceIP +"#"+row.getString(2)+"|"+row.getLong(3)+"|"+row.getLong(4));
-				}*/
+				}
 		  }
-}
+}*/

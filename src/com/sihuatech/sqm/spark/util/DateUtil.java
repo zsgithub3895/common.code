@@ -1,5 +1,6 @@
 package com.sihuatech.sqm.spark.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,9 +9,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.sihuatech.sqm.spark.common.Constant;
@@ -179,6 +181,14 @@ public class DateUtil {
         return formatDate(DateUtil.add(formatDateTime(date,formatter), day, "day"),formatter);
     }
     
+    /** 获取前8天时间点 **/
+    public static Calendar getBackEightTime(){
+    	Calendar c = Calendar.getInstance();
+    	c.add(Calendar.WEEK_OF_MONTH, -1);
+    	c.add(Calendar.DAY_OF_MONTH, -1);
+    	return c;
+    }
+    
     /**
      * 根据period获取当前时间往前回溯的有效时间
      * 因为离线分析不是分析当前时段的数据，而是前一个有效时段的数据
@@ -197,6 +207,7 @@ public class DateUtil {
 			//天
 		    c.add(Calendar.DAY_OF_MONTH, -1);
 		} else if (period.equalsIgnoreCase("WEEK")) {
+			 c.add(Calendar.WEEK_OF_MONTH, -1);
 			//周  
 		} else if (period.equalsIgnoreCase("MONTH")) {
 			//月
@@ -314,47 +325,11 @@ public class DateUtil {
 		}
 		// 文件名前缀
 		sb.append(filePrefix).append(Constant.DELIMITER);
-		//峰时
-		if(period.equalsIgnoreCase("PEAK")){
-			String peakPeriod = PropHelper.getProperty("PEAK_PERIOD");
-			if(null == peakPeriod || "".equals(peakPeriod.trim())){
-				System.err.println("No peak configuration, can not be analyzed");
-				System.exit(1);
-			}else{
-				if(!Pattern.matches("\\{(([01][0-9]|2[0-3])+,*)+\\}[|]\\{(([01][0-9]|2[0-3])+,*)+\\}", peakPeriod)){
-					System.err.println("Peak config format error, can not be analyzed");
-					System.exit(1);
-				}
-			}
-			String[] peakArr = peakPeriod.split("\\|");
-			//星期几 周日至周六对应的DAY_OF_WEEK值为1至7
-			int weekDay = c.get(Calendar.DAY_OF_WEEK);
-			if(weekDay == 1 || weekDay == 7){
-				//双休日
-				sb.append(peakArr[1]);
-			}else{
-				//工作日
-				sb.append(peakArr[0]);
-			}
-			return sb.toString();
-		}
 		// 小时
 		if (String.valueOf(hour).length() == 1) {
 			sb.append("0" + hour).append(Constant.DELIMITER);
 		} else {
 			sb.append(hour).append(Constant.DELIMITER);
-		}
-		// 计算文件名称minute取值
-		if(period.equalsIgnoreCase("15MIN")){
-			if (minute >= 0 && minute < 15) {
-				sb.append("00-15minute");
-			} else if (minute >= 15 && minute < 30) {
-				sb.append("15-15minute");
-			} else if (minute >= 30 && minute < 45) {
-				sb.append("30-15minute");
-			} else if (minute >= 45 && minute < 60) {
-				sb.append("45-15minute");
-			}
 		}
 		return sb.toString();
 	}
@@ -421,18 +396,6 @@ public class DateUtil {
 			sb.append("0" + hour);
 		} else {
 			sb.append(hour);
-		}
-		// 计算文件名称minute取值
-		if(period.equalsIgnoreCase("15MIN")){
-			if (minute >= 0 && minute < 15) {
-				sb.append("00");
-			} else if (minute >= 15 && minute < 30) {
-				sb.append("15");
-			} else if (minute >= 30 && minute < 45) {
-				sb.append("30");
-			} else if (minute >= 45 && minute < 60) {
-				sb.append("45");
-			}
 		}
 		return sb.toString();
 	}
@@ -503,18 +466,7 @@ public class DateUtil {
 		} else {
 			sb.append(hour);
 		}
-		// 计算文件名称minute取值
-		if(period.equalsIgnoreCase("15MIN")){
-			if (minute >= 0 && minute < 15) {
-				sb.append("00");
-			} else if (minute >= 15 && minute < 30) {
-				sb.append("15");
-			} else if (minute >= 30 && minute < 45) {
-				sb.append("30");
-			} else if (minute >= 45 && minute < 60) {
-				sb.append("45");
-			}
-		}else if(period.equalsIgnoreCase("HOUR")){
+		if(period.equalsIgnoreCase("HOUR")){
 			sb.append("00");
 		} else { // 都没有匹配上原样输出时间
 			sb.append(minute > 9 ? minute : "0" + minute);
@@ -721,13 +673,128 @@ public class DateUtil {
 		}else if (period.equalsIgnoreCase("HOUR")) {
 			// 小时
 			time = 2*60*60;
-		}else if (period.equalsIgnoreCase("15MIN")) {
-			//15分钟
-			time = 2*15*60;
 		}else if (period.equalsIgnoreCase("R")) {
 			//实时
 			time = 2*5*60;
 		}
 		return time;
+	}
+	
+	/**
+	 * 获取spark实时分析数据的时间点，往前推batchDuration的整的时间点
+	 * @return
+	 */
+	public static String getRTPeriodTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		long ts = System.currentTimeMillis();
+		long tmpts = ts - ts % (5 * 60 * 1000);
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(tmpts);
+		c.add(Calendar.MINUTE, -5);
+		return sdf.format(c.getTime());
+	}
+	
+	/**
+	 * 获取spark实时分析数据的时间点，往前推batchDuration的整的时间点
+	 * @return
+	 */
+	public static String getQuarterOfHour(String time) {
+		String hour = time.substring(0,10);
+		String fif_quarter = hour + Constant.FIF_QUARTER;
+		String sec_quarter = hour + Constant.SEC_QUARTER;
+		String thi_quarter = hour + Constant.THI_QUARTER;
+		String fou_quarter = hour + Constant.FOU_QUARTER;
+		String suffix = hour+Constant.SUFFIX;
+		if(time.compareTo(fif_quarter)>=0 && time.compareTo(sec_quarter)<0){
+			return fif_quarter;
+		}else if(time.compareTo(sec_quarter)>=0 && time.compareTo(thi_quarter)<0){
+			return sec_quarter;
+		}else if(time.compareTo(thi_quarter)>=0 && time.compareTo(fou_quarter)<0){
+			return thi_quarter;
+		}else if(time.compareTo(fou_quarter)>=0 && time.compareTo(suffix)<=0){
+			return fou_quarter;
+		}
+		return null;
+	}
+	
+	public static String getMinuteSubtraction(int n) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MINUTE, -n);
+		return sdf.format(c.getTime());
+	}
+	
+	public static String getMinutePlus(String time,int n) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		Calendar c = Calendar.getInstance();
+		try {
+			c.setTime(sdf.parse(time));
+			c.add(Calendar.MINUTE, n);
+			return sdf.format(c.getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String getPeriodTime(String key,int hour) {
+	   int n = hour;
+	   String value = PropHelper.getProperty(key);
+	    if(StringUtils.isNotBlank(value)) {
+	    	n = Integer.parseInt(value.trim());
+	    }
+		String planTime = null;
+		try {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.HOUR, -n);
+		planTime = dateFormat.format(cal.getTime());
+		} catch (Exception e) {
+			logger.info("error:",e);
+		}
+		return planTime;
+	}
+	
+	public static List<String> getMinuteRanges(String startSecond,String freezTime,String period) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		try {
+			Calendar starTime = Calendar.getInstance();
+			starTime.setTime(df.parse(startSecond));
+			Calendar endTime = Calendar.getInstance();
+			long time = DateUtil.dateTimeToLong(startSecond,"yyyyMMddHHmmss");
+			long all = Long.valueOf(freezTime)/1000+ time;
+			endTime.setTimeInMillis(all);
+			if(period.equals(Constant.R1)){
+				List<String> minuteList = new ArrayList<String>();
+				while(starTime.before(endTime) || starTime.equals(endTime)){
+					minuteList.add(sdf.format(starTime.getTime()));
+					starTime.add(Calendar.MINUTE, 1);
+					starTime.set(Calendar.SECOND, 0);
+				}
+				return minuteList;
+			}else if(period.equals(Constant.R15)){
+				List<String> minuteList = new ArrayList<String>();
+				String indexTime = getQuarterOfHour(sdf.format(starTime.getTime()));
+				minuteList.add(indexTime+"00");
+				String nextIndexTime = getQuarterOfHour(sdf.format(endTime.getTime()));
+				if(nextIndexTime.compareTo(indexTime)>0){
+					minuteList.add(nextIndexTime+"00");
+				}
+				return minuteList;
+			}else if(period.equals(Constant.R60)){
+				List<String> minuteList = new ArrayList<String>();
+				String indexTime = sdf.format(starTime.getTime()).substring(0, 10);
+				minuteList.add(indexTime);
+				String nextIndexTime = sdf.format(endTime.getTime()).substring(0, 10);
+				if(nextIndexTime.compareTo(indexTime)>0){
+					minuteList.add(nextIndexTime);
+				}
+				return minuteList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
