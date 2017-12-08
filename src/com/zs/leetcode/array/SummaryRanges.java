@@ -18,18 +18,23 @@ public class SummaryRanges {
 		 if(null == nums || nums.length==0){
 			 return list;
 		 }
-		 int begin = 0;
-		 int curr = 0;
-		 for(int i=1;i < nums.length-1;i++){
-			 if(nums[curr]+1 == nums[i]){
-				 curr++;
+		 int left = 0;
+		 int right = 0;
+		 boolean together = false;
+		 for(int i=1;i <= nums.length;i++){
+			 if(i < nums.length && nums[right]+1 == nums[i]){
+				 right++;
+				 together = true;
 			 }else{
-				 if(nums[begin] != nums[curr]){
-					 list.add(nums[begin]+"->"+nums[curr]); 
+				 if(together){
+					 list.add(nums[left]+"->"+nums[right]);
+					 together = false;
 				 }else{
-					 list.add(nums[begin]+""); 
+					 list.add(nums[left]+""); 
 				 }
-				 begin = curr+1;
+				 right++;
+				 left = right;
+				
 			 }
 		 }
 		 return list;
