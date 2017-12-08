@@ -43,7 +43,7 @@ import kafka.serializer.StringDecoder;
 import scala.Tuple2;
 /**
  * @author zhangsai
- *hiveContext 主要实现 grouping sets
+ *hiveContext 主要实现 grouping sets,group_id是为了区分每条输出结果是属于哪一个group by的数据
  */
 @SuppressWarnings("serial")
 public class LagphaseAnalasis {
